@@ -161,6 +161,9 @@ resource "databricks_job" "lakehouse_daily" {
     }
     notebook_task {
       notebook_path = databricks_notebook.lakehouse.path
+      base_parameters = {
+        workspace_root = var.workspace_root
+      }
     }
   }
 }

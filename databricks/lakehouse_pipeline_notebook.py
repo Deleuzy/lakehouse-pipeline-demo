@@ -10,8 +10,14 @@ import os
 import sys
 from pathlib import Path
 
-# Must equal "/Workspace" + workspace_root in infra/variables.tf. A test checks this.
-REPO_PATH = "/Workspace/Shared/lakehouse-pipeline"
+# Terraform passes workspace_root as a job parameter. The default is only used when the notebook
+# runs by hand, and must equal the default in infra/variables.tf (a test checks this).
+DEFAULT_WORKSPACE_ROOT = "/Shared/lakehouse-pipeline"
+try:
+    workspace_root = dbutils.widgets.get("workspace_root")  # noqa: F821  (dbutils exists on Databricks)
+except Exception:
+    workspace_root = DEFAULT_WORKSPACE_ROOT
+REPO_PATH = f"/Workspace{workspace_root}"
 sys.path.insert(0, f"{REPO_PATH}/src")
 os.environ["LAKEHOUSE_ROOT"] = REPO_PATH
 

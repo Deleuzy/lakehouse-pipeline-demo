@@ -108,7 +108,7 @@ Steps to deploy on a **free Azure account** (you run these yourself; nothing her
 3. `cd infra && cp terraform.tfvars.example terraform.tfvars` and review it. Keep `databricks_sku = "standard"` and `enable_unity_catalog = false` on a free account.
 4. `terraform init`, then `terraform plan -out tfplan`. Read the plan before applying.
 5. `terraform apply tfplan`.
-6. Terraform uploads the notebook and the code and data it reads to `var.workspace_root` (default `/Shared/lakehouse-pipeline`) in the new workspace. Nothing to import by hand.
+6. Terraform uploads the notebook and the code and data it reads to `var.workspace_root` (default `/Shared/lakehouse-pipeline`) in the new workspace, and the job passes that same value to the notebook as the `workspace_root` parameter. Nothing to import by hand.
 7. In the Data Factory studio, open `pl_energinet_to_lakehouse` and click **Debug**. Check the copy and the Databricks job each succeed.
 8. **When finished:** `terraform destroy`. Check the portal afterwards: the Databricks managed resource group `rg-lakehouse-dbw-managed` is removed with the workspace.
 
