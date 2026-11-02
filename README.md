@@ -35,7 +35,7 @@ You need Python 3.12 and Java 17 (set `JAVA_HOME` to a JDK 17 if `java -version`
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-make test     # offline: 14 pass, 1 skipped (the Pub/Sub emulator test, see below)
+make test     # offline: 16 pass, 1 skipped (the Pub/Sub emulator test, see below)
 make run      # the saved sample day (1 Nov 2026, UTC) through bronze, silver, gold
 ```
 
@@ -125,7 +125,7 @@ Steps to deploy on a **free Azure account** (you run these yourself; nothing her
 | Check | Where it ran | Result |
 |---|---|---|
 | Offline tests (`make test`) | Local, macOS, Python 3.12, Java 17 | 14 passed, 1 skipped (the emulator test) |
-| Offline tests | GitHub Actions `test` job ([run 41482881857](https://github.com/Deleuzy/lakehouse-pipeline-demo/actions/runs/41482881857)) | 14 passed, 1 skipped; pipeline smoke run: 576 silver, 0 quarantined |
+| Offline tests | GitHub Actions `test` job ([run 41482881857](https://github.com/Deleuzy/lakehouse-pipeline-demo/actions/runs/41482881857)) | 16 passed, 1 skipped (latest run 41485677850); pipeline smoke run: 576 silver, 0 quarantined |
 | Pub/Sub emulator test | Local, Docker Desktop, emulator container | 1 passed (run once, then the container was stopped) |
 | Pipeline on the saved sample (`make run`) | Local | 576 bronze, 576 silver, 0 quarantined, 0 incomplete area-days |
 | Dagster definitions and one partition | Local, CLI (`dagster asset materialize`) | Run succeeded; reruns leave counts unchanged (tested) |
