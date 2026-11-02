@@ -125,11 +125,11 @@ Steps to deploy on a **free Azure account** (you run these yourself; nothing her
 | Check | Where it ran | Result |
 |---|---|---|
 | Offline tests (`make test`) | Local, macOS, Python 3.12, Java 17 | 14 passed, 1 skipped (the emulator test) |
-| Offline tests | GitHub Actions `test` job | See the latest run in the repo's Actions tab |
+| Offline tests | GitHub Actions `test` job ([run 41482881857](https://github.com/Deleuzy/lakehouse-pipeline-demo/actions/runs/41482881857)) | 14 passed, 1 skipped; pipeline smoke run: 576 silver, 0 quarantined |
 | Pub/Sub emulator test | Local, Docker Desktop, emulator container | 1 passed (run once, then the container was stopped) |
 | Pipeline on the saved sample (`make run`) | Local | 576 bronze, 576 silver, 0 quarantined, 0 incomplete area-days |
 | Dagster definitions and one partition | Local, CLI (`dagster asset materialize`) | Run succeeded; reruns leave counts unchanged (tested) |
-| Terraform `fmt -check`, `init -backend=false`, `validate` | Local (Terraform 1.17.1) and GitHub Actions `infra` job | Pass; no credentials used |
+| Terraform `fmt -check`, `init -backend=false`, `validate` | Local (Terraform 1.17.1) and GitHub Actions `infra` job (same run) | Pass; no credentials used |
 | tflint with the azurerm ruleset | Local and GitHub Actions `infra` job | Pass |
 | Azure deployment | Nothing | **Not deployed.** No `terraform apply` has run, and no Azure resources exist. |
 | Databricks notebook | Nothing | **Not run.** |
