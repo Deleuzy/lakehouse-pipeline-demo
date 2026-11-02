@@ -10,7 +10,8 @@ import os
 import sys
 from pathlib import Path
 
-REPO_PATH = "/Workspace/Users/<your-user>/lakehouse-pipeline-demo"  # set this to your clone
+# Must equal "/Workspace" + workspace_root in infra/variables.tf. A test checks this.
+REPO_PATH = "/Workspace/Shared/lakehouse-pipeline"
 sys.path.insert(0, f"{REPO_PATH}/src")
 os.environ["LAKEHOUSE_ROOT"] = REPO_PATH
 

@@ -114,7 +114,30 @@ resource "azurerm_data_factory_linked_service_azure_databricks" "workspace" {
   }
 }
 
-# The job that Databricks runs: the notebook in databricks/ on a small single-node cluster.
+# Upload the repo files the notebook needs, under var.workspace_root. The notebook sets its
+# REPO_PATH to /Workspace + var.workspace_root, so code and data resolve to the same place.
+locals {
+  repo_files = toset(concat(
+    [for f in fileset(path.module, "../src/**/*.py") : f],
+    [for f in fileset(path.module, "../src/**/*.sql") : f],
+    [for f in fileset(path.module, "../src/**/*.json") : f],
+    [for f in fileset(path.module, "../data/**/*") : f],
+  ))
+}
+
+resource "databricks_workspace_file" "repo" {
+  for_each = local.repo_files
+  source   = "${path.module}/${each.value}"
+  path     = "${var.workspace_root}/${replace(each.value, "../", "")}"
+}
+
+resource "databricks_notebook" "lakehouse" {
+  source   = "${path.module}/../databricks/lakehouse_pipeline_notebook.py"
+  path     = "${var.workspace_root}/databricks/lakehouse_pipeline_notebook"
+  language = "PYTHON"
+}
+
+# The job that Databricks runs: the notebook on a small single-node cluster.
 data "databricks_spark_version" "latest_lts" {
   long_term_support = true
 }
@@ -137,7 +160,7 @@ resource "databricks_job" "lakehouse_daily" {
       }
     }
     notebook_task {
-      notebook_path = "/Shared/lakehouse-pipeline/databricks/lakehouse_pipeline_notebook"
+      notebook_path = databricks_notebook.lakehouse.path
     }
   }
 }

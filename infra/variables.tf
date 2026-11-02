@@ -37,3 +37,9 @@ variable "energinet_relative_url" {
   type        = string
   default     = "ElectricityProdex5MinRealtime?sort=Minutes5UTC%20ASC&limit=10000&start=2026-11-01T01%3A00&end=2026-11-02T01%3A00"
 }
+
+variable "workspace_root" {
+  description = "Databricks workspace folder for the lakehouse code. The notebook reads its code from /Workspace + this path (see tests/test_infra_paths.py)."
+  type        = string
+  default     = "/Shared/lakehouse-pipeline"
+}

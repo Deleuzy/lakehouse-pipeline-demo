@@ -9,11 +9,17 @@ The local tests and the local pipeline run pass (see the main README).
 
 ## Steps (to be done by you, in your own workspace)
 
+**With Terraform (`infra/`):** `terraform apply` uploads the notebook, `src/` and `data/` to
+`var.workspace_root` (default `/Shared/lakehouse-pipeline`) and creates the job that runs it.
+`REPO_PATH` in the notebook already matches that folder; a test checks the two agree.
+
+**By hand (no Terraform):**
 1. Create a Databricks Free Edition workspace (sign-up is not done by this repo).
-2. Clone or import this repository into **Workspace > Repos** (or upload the folder).
-3. Open `databricks/lakehouse_pipeline_notebook.py` as a notebook. Set `REPO_PATH`
-   to where the repo lives in your workspace.
-4. Run all cells. Tables are created in the `lakehouse_demo` schema.
+2. Upload this repository's `src/` and `data/` folders to a workspace folder, and import
+   `databricks/lakehouse_pipeline_notebook.py` as a notebook.
+3. In the notebook, set `REPO_PATH` to `/Workspace` plus that folder.
+
+Then run all cells. Tables are created in the `lakehouse_demo` schema.
 
 The notebook uses `source="sample"`, so it needs no outbound calls. Change it to
 `source="live"` with a start and end time to fetch from the Energinet API, if
