@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run tests (offline)
+        run: python -m pytest -q
+
+      - name: Run pipeline on the saved sample
+        run: PYTHONPATH=src python -m lakehouse.pipeline --source sample
+
+  infra:
+    # Offline checks only. No Azure or Databricks credentials, and nothing is applied.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.17.1"
+
+      - name: Format check
+        run: terraform -chdir=infra fmt -check -recursive
+
+      - name: Init without backend and validate
+        run: |
+          terraform -chdir=infra init -backend=false -input=false
+          terraform -chdir=infra validate
+
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.65.0
+
+      - name: tflint
+        run: |
+          tflint --init --chdir=infra
+          tflint --chdir=infra

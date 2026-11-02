@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "energinet.production.5min",
+  "description": "One 5-minute production reading for a Danish price area, published as an event. Version 1.",
+  "type": "object",
+  "required": [
+    "schema_version", "event_id", "event_time", "price_area", "interval_utc",
+    "production_lt_100_mw", "production_ge_100_mw", "offshore_wind_mw", "onshore_wind_mw", "solar_mw"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "event_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "event_time": {"type": "string", "minLength": 19, "description": "ISO 8601 time the source produced the event"},
+    "price_area": {"enum": ["DK1", "DK2"]},
+    "interval_utc": {"type": "string", "minLength": 19, "description": "ISO 8601 UTC start of the 5-minute interval"},
+    "production_lt_100_mw": {"type": "number", "minimum": 0, "maximum": 20000},
+    "production_ge_100_mw": {"type": "number", "minimum": 0, "maximum": 20000},
+    "offshore_wind_mw": {"type": "number", "minimum": 0, "maximum": 20000},
+    "onshore_wind_mw": {"type": "number", "minimum": 0, "maximum": 20000},
+    "solar_mw": {"type": "number", "minimum": 0, "maximum": 20000}
+  }
+}

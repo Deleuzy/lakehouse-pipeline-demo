@@ -1,0 +1,5 @@
+# Copy to terraform.tfvars and edit. Do not commit terraform.tfvars.
+project                = "lakehouse"
+location               = "westeurope"
+databricks_sku         = "standard"
+enable_unity_catalog   = false

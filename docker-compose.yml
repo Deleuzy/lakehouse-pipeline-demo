@@ -1,0 +1,9 @@
+# Local Pub/Sub emulator. No Google account or credentials are needed.
+#   docker compose up -d
+#   export PUBSUB_EMULATOR_HOST=localhost:8085
+services:
+  pubsub-emulator:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
+    command: gcloud beta emulators pubsub start --project=demo-project --host-port=0.0.0.0:8085
+    ports:
+      - "8085:8085"
